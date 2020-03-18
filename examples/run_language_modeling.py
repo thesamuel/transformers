@@ -421,10 +421,12 @@ def train(args, train_dataset, model: PreTrainedModel, tokenizer: PreTrainedToke
                     torch.save(scheduler.state_dict(), os.path.join(output_dir, "scheduler.pt"))
                     logger.info("Saving optimizer and scheduler states to %s", output_dir)
 
-            if (args.patience and evals_without_improvement >= args.patience) or (args.max_steps > 0 and global_step > args.max_steps):
+            if ((args.patience and evals_without_improvement >= args.patience)
+                    or (args.max_steps > 0 and global_step > args.max_steps)):
                 epoch_iterator.close()
                 break
-        if (args.patience and evals_without_improvement >= args.patience) or (args.max_steps > 0 and global_step > args.max_steps):
+        if ((args.patience and evals_without_improvement >= args.patience)
+                or (args.max_steps > 0 and global_step > args.max_steps)):
             train_iterator.close()
             break
 
