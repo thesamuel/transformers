@@ -55,7 +55,6 @@ BAG_OF_WORDS_ARCHIVE_MAP = {
     "space": "https://s3.amazonaws.com/models.huggingface.co/bert/pplm/bow/space.txt",
     "technology": "https://s3.amazonaws.com/models.huggingface.co/bert/pplm/bow/technology.txt",
 }
-
 DISCRIMINATOR_MODELS_PARAMS = {
     "clickbait": {
         "url": "https://s3.amazonaws.com/models.huggingface.co/bert/pplm/discriminators/clickbait_classifier_head.pt",
@@ -73,6 +72,14 @@ DISCRIMINATOR_MODELS_PARAMS = {
         "default_class": 3,
         "pretrained_model": "gpt2-medium",
     },
+    "toxicity": {
+        "url": "https://raw.githubusercontent.com/uber-research/PPLM/master/paper_code/discrim_models/clickbait_classifierhead.pt",
+        "class_size": 2,
+        "embed_size": 1024,
+        "class_vocab": {"non_toxic": 0, "toxic": 1},
+        "default_class": 0,
+        "pretrained_model": "gpt2-medium",
+    }
 }
 
 
