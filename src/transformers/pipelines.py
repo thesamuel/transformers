@@ -549,9 +549,13 @@ class TextGenerationPipeline(Pipeline):
     the Virgin Mary, prompting him to become a priest. Rasputin quickly becomes famous,
     with people, even a bishop, begging for his blessing. <eod> </s> <eos>"""
 
-    def __call__(
-        self, *texts, return_tensors=False, return_text=True, clean_up_tokenization_spaces=False, **generate_kwargs
-    ):
+    def __call__(self,
+                 *texts,
+                 return_tensors=False,
+                 return_text=True,
+                 clean_up_tokenization_spaces=False,
+                 return_prompt=True,
+                 **generate_kwargs):
         text_inputs = self._args_parser(*texts)
 
         results = []
@@ -575,7 +579,7 @@ class TextGenerationPipeline(Pipeline):
 
                 # Ensure that batch size = 1 (batch generation not allowed for now)
                 assert (
-                    input_ids is None or input_ids.shape[0] == 1
+                        input_ids is None or input_ids.shape[0] == 1
                 ), "Batch generation is currently not supported. See https://github.com/huggingface/transformers/issues/3021 for more information."
 
                 output_sequences = self.model.generate(input_ids=input_ids, **generate_kwargs)  # BS x SL
@@ -606,7 +610,9 @@ class TextGenerationPipeline(Pipeline):
                             )
                         )
 
-                    record["generated_text"] = prompt_text + text[prompt_length:]
+                    record["generated_text"] = (
+                        prompt_text + text[prompt_length:] if return_prompt else text[prompt_length:]
+                    )
 
                 result.append(record)
             results += [result]
