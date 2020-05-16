@@ -555,6 +555,7 @@ class TextGenerationPipeline(Pipeline):
                  return_text=True,
                  clean_up_tokenization_spaces=False,
                  return_prompt=True,
+                 max_length=20,
                  **generate_kwargs):
         text_inputs = self._args_parser(*texts)
 
@@ -582,7 +583,7 @@ class TextGenerationPipeline(Pipeline):
                         input_ids is None or input_ids.shape[0] == 1
                 ), "Batch generation is currently not supported. See https://github.com/huggingface/transformers/issues/3021 for more information."
 
-                output_sequences = self.model.generate(input_ids=input_ids, **generate_kwargs)  # BS x SL
+                output_sequences = self.model.generate(input_ids=input_ids, max_length=len(input_ids[0]) + max_length, **generate_kwargs)  # BS x SL
 
             result = []
             for generated_sequence in output_sequences:
